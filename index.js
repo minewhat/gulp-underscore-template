@@ -22,7 +22,7 @@ module.exports = function (options) {
         "    module.exports = <%= name %>;"+
         "}"
         var exportVariable = name.replace(/\.html?$/, '').replace(/\\/g, '/')
-        var compiledString = _.template(template)({exportName:exportName,template:exportTemplate,name:exportVariable})
+        var compiledString = _.template(exportTemplate)({exportName:exportName,template:template,name:exportVariable})
         /*
         var stylecompiled= < template >
         if(typeof style_template != 'undefined') {
