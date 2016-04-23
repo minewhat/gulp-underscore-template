@@ -14,8 +14,25 @@ module.exports = function (options) {
         var html = file.contents.toString();
         var template = _.template(html).source;
         var exportName = options.exportName || "exports";
-
-        return exportName + "['" + name.replace(/\.html?$/, '').replace(/\\/g, '/') + "']=" + template + ';';
+        var exportTemplate = "var <%= exportName %> = <%= template %>;" + 
+        "if(typeof <%= exportName %> != 'undefined') {"+
+        "    <%= exportName %>['<%= name %>'] = <%= name %>;"+
+        "}"+
+        "else if(typeof module != 'undefined') {"+
+        "    module.exports = <%= name %>;"+
+        "}"
+        var exportVariable = name.replace(/\.html?$/, '').replace(/\\/g, '/')
+        var compiledString = _.template(template)({exportName:exportName,template:exportTemplate,name:exportVariable})
+        /*
+        var stylecompiled= < template >
+        if(typeof style_template != 'undefined') {
+            style_template['stylecompiled'] = stylecompiled;
+        }
+        else if(typeof module != 'undefined') {
+            module.exports = stylecompiled;
+        }
+        */
+       return compiledString;
     }
 
     return through.obj(function (file, enc, callback) {
