@@ -18,7 +18,7 @@ module.exports = function (options) {
         if(options.htmlMode)
             return exportName + "['" + name.replace(/\.html?$/, '').replace(/\\/g, '/') + "']=" + template + ';';
         
-        var exportTemplate = "var <%= exportName %> = <%= template %>;" + 
+        var exportTemplate = "var <%= name %> = <%= template %>;" + 
         "if(typeof <%= exportName %> != 'undefined') {"+
         "    <%= exportName %>['<%= name %>'] = <%= name %>;"+
         "}"+
