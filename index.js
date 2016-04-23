@@ -14,6 +14,10 @@ module.exports = function (options) {
         var html = file.contents.toString();
         var template = _.template(html).source;
         var exportName = options.exportName || "exports";
+        
+        if(options.htmlMode)
+            return exportName + "['" + name.replace(/\.html?$/, '').replace(/\\/g, '/') + "']=" + template + ';';
+        
         var exportTemplate = "var <%= exportName %> = <%= template %>;" + 
         "if(typeof <%= exportName %> != 'undefined') {"+
         "    <%= exportName %>['<%= name %>'] = <%= name %>;"+
