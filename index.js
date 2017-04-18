@@ -13,6 +13,9 @@ module.exports = function (options) {
         var name = typeof options.name === 'function' && options.name(file) || file.relative;
         var html = file.contents.toString();
         var template = _.template(html).source;
+        if(options.noconflict)
+            template = template.replace("function(obj)","function(_,obj)");
+
         var exportName = options.exportName || "exports";
         
         if(options.htmlMode)
