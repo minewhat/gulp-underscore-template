@@ -12,7 +12,11 @@ module.exports = function (options) {
     function compiler (file) {
         var name = typeof options.name === 'function' && options.name(file) || file.relative;
         var html = file.contents.toString();
-        var template = _.template(html).source;
+        var template;
+        if(options.rawmode)
+          template = "'"+html+"'"
+        else
+            template = _.template(html).source;
         if(options.noconflict)
             template = template.replace("function(obj)","function(_,obj)");
 
