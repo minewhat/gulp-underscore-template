@@ -12,11 +12,24 @@ module.exports = function (options) {
     function compiler (file) {
         var name = typeof options.name === 'function' && options.name(file) || file.relative;
         var html = file.contents.toString();
+        var mustacheSettings = {
+          evaluate: /\$\((.+?)\)\$/g,
+          interpolate: /\$\(=(.+?)\)\$/g,
+          escape: /\$\(-(.+?)\$\)/g
+        };
         var template;
-        if(options.rawmode)
+        if(options.rawmode){
           template = "'"+html+"'"
-        else
-            template = _.template(html).source;
+
+        }
+        else{
+            if(html.indexOf('$(') > -1){
+            	template = _.template(html, mustacheSettings).source;
+            }else{
+ 				 template = _.template(html).source;           	
+            }
+ 
+        }
         if(options.noconflict)
             template = template.replace("function(obj)","function(_,obj)");
 
